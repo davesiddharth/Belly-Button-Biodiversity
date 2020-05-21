@@ -23,11 +23,13 @@ function plots(id) {
     // getting data from the json file
     d3.json("samples.json").then((data)=> {
         //console.log(data)
-  
-        var wfreq = data.metadata.map(f => f.wfreq);
-        //console.log("Washing Freq: " + wfreq);
         
-        // filter wfreq values by id 
+        //filter wfreq value by id
+        var wfreq = data.metadata.filter(f => f.id.toString() === id)[0];
+        wfreq = wfreq.wfreq;
+        console.log("Washing Freq: " + wfreq);
+        
+        // filter samples+ values by id 
         var samples = data.samples.filter(s => s.id.toString() === id)[0];
         
         //console.log("Samples: " + samples);
@@ -95,12 +97,11 @@ function plots(id) {
         Plotly.newPlot("bubble", data1, layout_b); 
   
         // The guage chart
-  
         var data_g = [
           {
           domain: { x: [0, 1], y: [0, 1] },
-          value: parseFloat(wfreq),
-          title: { text: `Belly Button Washing Frequency` },
+          value: wfreq,
+          title: {text: `Belly Button Washing Frequency`},
           type: "indicator",
           
           mode: "gauge+number",
